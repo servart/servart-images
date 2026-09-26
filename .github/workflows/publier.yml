@@ -1,0 +1,39 @@
+# Recopié par le Pilote Servart (servart-reseaux/outils/pilote/depot/) : le modifier là-bas.
+name: Publier sur Instagram
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # publications arrivées à l'heure (GitHub ajoute 5 à 20 min de retard)
+    - cron: "30 5 * * 1"     # lundi matin : renouveler le jeton Instagram
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publier
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Identité git
+        run: |
+          git config user.name "Pilote Servart"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Publier ce qui est à l'heure
+        env:
+          IG_JETON: ${{ secrets.IG_JETON }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          NTFY_CANAL: ${{ secrets.NTFY_CANAL }}
+        run: python3 publier.py
+      - name: Renouveler le jeton (le lundi)
+        if: github.event.schedule == '30 5 * * 1'
+        env:
+          IG_JETON: ${{ secrets.IG_JETON }}
+          NTFY_CANAL: ${{ secrets.NTFY_CANAL }}
+          GH_SECRETS: ${{ secrets.GH_SECRETS }}
+        run: python3 publier.py --renouveler
