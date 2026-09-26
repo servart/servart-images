@@ -183,5 +183,27 @@ def renouveler():
     enregistrer("Jeton Instagram renouvelé")
 
 
+def tester():
+    """Lancement à la main (« Run workflow ») : vérifie les 4 secrets sans rien publier."""
+    bilan = []
+    try:
+        nom = appel(USER, {"fields": "username"}).get("username", "?")
+        bilan.append(f"Instagram OK (@{nom})")
+    except Exception as e:
+        bilan.append(f"Instagram EN ÉCHEC : IG_JETON ou IG_USER_ID ({str(e)[:150]})")
+    env = dict(os.environ, GH_TOKEN=os.environ.get("GH_SECRETS", ""))
+    r = subprocess.run(["gh", "secret", "list", "--repo", os.environ.get("GITHUB_REPOSITORY", "")],
+                       capture_output=True, text=True, env=env)
+    bilan.append("GH_SECRETS OK" if r.returncode == 0 else "GH_SECRETS EN ÉCHEC (jeton GitHub ou droit « Secrets »)")
+    message = " · ".join(bilan)
+    print(message)
+    notifier("Test du dépôt servart-images", message)  # arrive seulement si NTFY_CANAL est bon
+    if "ÉCHEC" in message:
+        raise SystemExit(1)
+
+
 if __name__ == "__main__":
-    renouveler() if "--renouveler" in sys.argv else passage()
+    if "--tester" in sys.argv:
+        tester()
+    else:
+        renouveler() if "--renouveler" in sys.argv else passage()
