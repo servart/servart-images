@@ -1,0 +1,22 @@
+{
+ "nom": "2026-S40-presentation-1-servart",
+ "titre": "Servart, c'est quoi ?",
+ "publier_le": "2026-09-28T18:00+02:00",
+ "legende": "Trouver un artiste à Toulouse, ou des artistes avec qui créer, sans passer\ndes heures sur les réseaux : c'est pour ça que Servart existe.\n\nServart met en relation les artistes entre eux, et avec celles et ceux qui\nles cherchent pour un mariage, un clip, un festival ou un événement. Tous\nles arts y ont leur place, sans hiérarchie, et chaque profil peut à la fois\nchercher et être trouvé.\n\nTout se passe sur servart.fr.\n\n#toulouse #artistetoulousain #occitanie #collaborationartistique",
+ "images": [
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/01.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/02.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/03.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/04.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/05.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S40-presentation-1-servart/06.jpg"
+ ],
+ "textes_alternatifs": [
+  "Titre « Trouver le bon artiste ne devrait pas être un casse-tête » avec le logo Servart, plateforme pour trouver un artiste à Toulouse.",
+  "Texte expliquant qu'il est difficile de trouver un photographe, un groupe ou une illustratrice sans réseau.",
+  "Texte présentant Servart, mise en relation entre artistes et clients pour un mariage, un clip ou un festival.",
+  "Liste des disciplines artistiques présentes sur Servart : musique, photo, vidéo, illustration, danse, théâtre.",
+  "Texte expliquant que chaque profil d'artiste peut chercher et être trouvé sur Servart.",
+  "Texte « Les artistes et les projets se trouvent ici » avec l'adresse servart.fr, plateforme de mise en relation avec des artistes."
+ ]
+}
