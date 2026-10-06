@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   publier:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # version fixe : ubuntu-latest passe à Ubuntu 26 le 19/10/2026
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
