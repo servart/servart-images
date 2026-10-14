@@ -8,13 +8,22 @@ outils/pilote/depot/) : le modifier là-bas, pas ici.
   Meta, puis rangées dans publie/<nom>.json (identifiant + lien).
 - 3 échecs, ou plus de 12 h de retard : rangées dans erreurs/<nom>.json, sans
   publier (le porteur décide).
-- --renouveler (le lundi) : prolonge le jeton Instagram de 60 jours et le
-  remet dans les secrets du dépôt.
+- Ensuite (reprises.py) : la même publication est reprise sur Threads et sur
+  la page Facebook, si leurs secrets sont là. Un échec là n'affecte jamais
+  Instagram : retenté au passage suivant, 3 essais.
+- --renouveler (le lundi) : prolonge les jetons Instagram et Threads de 60
+  jours et les remet dans les secrets du dépôt.
 
 Secrets du dépôt : IG_JETON, IG_USER_ID, NTFY_CANAL (notifications),
-GH_SECRETS (jeton GitHub qui peut écrire les secrets, pour --renouveler).
+GH_SECRETS (jeton GitHub qui peut écrire les secrets, pour --renouveler) ;
+facultatifs : TH_JETON, TH_USER_ID (Threads), FB_PAGE_ID, FB_PAGE_JETON (Facebook).
 """
 import datetime, glob, json, os, subprocess, sys, time, urllib.error, urllib.parse, urllib.request
+
+try:
+    import reprises
+except Exception:  # un souci dans reprises.py ne doit jamais empêcher Instagram
+    reprises = None
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 API = "https://graph.instagram.com/v23.0/"
@@ -162,9 +171,34 @@ def passage():
             continue
         ranger("publie", nom, {"nom": nom, "titre": titre, "prevue_le": p["publier_le"],
                                "publiee_le": maintenant.isoformat(timespec="minutes"),
-                               "media_id": media, "lien": lien}, f)
+                               "media_id": media, "lien": lien,
+                               "reprise": {"legende": p["legende"], "images": p.get("images"),
+                                           "video": p.get("video")}}, f)
         enregistrer(f"Publié : {titre}")
         notifier("Publié sur Instagram", f"« {titre} » est en ligne. {lien}")
+    rattraper()
+
+
+def rattraper():
+    """Reprend sur Threads et Facebook les publications Instagram des dernières heures (jamais bloquant)."""
+    if not reprises or not reprises.actifs():
+        return
+    maintenant = datetime.datetime.now(datetime.timezone.utc)
+    for f in sorted(glob.glob(os.path.join(ICI, "publie", "*.json"))):
+        try:
+            with open(f, encoding="utf-8") as fi:
+                rec = json.load(fi)
+            if not reprises.a_faire(rec, maintenant):
+                continue
+            messages = reprises.reprendre(rec, maintenant)
+            with open(f, "w", encoding="utf-8") as fo:
+                json.dump(rec, fo, ensure_ascii=False, indent=1)
+            titre = rec.get("titre", rec.get("nom", ""))
+            enregistrer(f"Reprise Threads / Facebook : {titre}")
+            if messages:
+                notifier("Repris sur Threads / Facebook", f"« {titre} »\n" + "\n".join(messages))
+        except Exception as e:
+            print("::warning::reprise impossible :", str(e)[:200])
 
 
 def renouveler():
@@ -184,10 +218,27 @@ def renouveler():
     except Exception as e:
         notifier("Jeton Instagram à vérifier (GitHub)", f"Renouvellement impossible : {str(e)[:200]}")
         raise SystemExit(1)
+    renouveler_threads()
     # garde le dépôt actif : GitHub coupe les tâches planifiées après 60 jours sans commit
     with open(os.path.join(ICI, "etat.txt"), "w", encoding="utf-8") as f:
         f.write(f"Jeton Instagram renouvelé le {datetime.date.today():%d/%m/%Y}.\n")
     enregistrer("Jeton Instagram renouvelé")
+
+
+def renouveler_threads():
+    """Jeton Threads (60 jours) : prolongé chaque lundi. Un échec prévient le porteur mais n'arrête rien."""
+    if not reprises or "threads" not in reprises.actifs():
+        return
+    try:
+        nouveau = reprises.renouveler_threads()
+        print("::add-mask::" + nouveau)
+        env = dict(os.environ, GH_TOKEN=os.environ.get("GH_SECRETS", ""))
+        r = subprocess.run(["gh", "secret", "set", "TH_JETON", "--repo", os.environ["GITHUB_REPOSITORY"]],
+                           input=nouveau, text=True, capture_output=True, env=env)
+        if r.returncode:
+            raise RuntimeError("secret non mis à jour (GH_SECRETS absent ou sans droit « Secrets »)")
+    except Exception as e:
+        notifier("Jeton Threads à vérifier (GitHub)", f"Renouvellement impossible : {str(e)[:200]}")
 
 
 def tester():
@@ -198,6 +249,24 @@ def tester():
         bilan.append(f"Instagram OK (@{nom})")
     except Exception as e:
         bilan.append(f"Instagram EN ÉCHEC : IG_JETON ou IG_USER_ID ({str(e)[:150]})")
+    if reprises:
+        if os.environ.get("TH_JETON", "").strip():
+            try:
+                nom = reprises.appel(reprises.THREADS, "me", reprises.secret("TH_JETON"), {"fields": "username"}).get("username", "?")
+                bilan.append(f"Threads OK (@{nom})")
+            except Exception as e:
+                bilan.append(f"Threads EN ÉCHEC : TH_JETON ({str(e)[:150]})")
+        else:
+            bilan.append("Threads non branché")
+        if os.environ.get("FB_PAGE_JETON", "").strip():
+            try:
+                nom = reprises.appel(reprises.FACEBOOK, reprises.secret("FB_PAGE_ID"), reprises.secret("FB_PAGE_JETON"),
+                                     {"fields": "name"}).get("name", "?")
+                bilan.append(f"Facebook OK ({nom})")
+            except Exception as e:
+                bilan.append(f"Facebook EN ÉCHEC : FB_PAGE_ID ou FB_PAGE_JETON ({str(e)[:150]})")
+        else:
+            bilan.append("Facebook non branché")
     env = dict(os.environ, GH_TOKEN=os.environ.get("GH_SECRETS", ""))
     r = subprocess.run(["gh", "secret", "list", "--repo", os.environ.get("GITHUB_REPOSITORY", "")],
                        capture_output=True, text=True, env=env)

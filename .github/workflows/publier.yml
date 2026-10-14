@@ -29,6 +29,10 @@ jobs:
           IG_JETON: ${{ secrets.IG_JETON }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           NTFY_CANAL: ${{ secrets.NTFY_CANAL }}
+          TH_JETON: ${{ secrets.TH_JETON }}
+          TH_USER_ID: ${{ secrets.TH_USER_ID }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_JETON: ${{ secrets.FB_PAGE_JETON }}
         run: python3 publier.py
       - name: Tester les secrets (lancement à la main)
         if: github.event_name == 'workflow_dispatch'
@@ -37,6 +41,10 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           NTFY_CANAL: ${{ secrets.NTFY_CANAL }}
           GH_SECRETS: ${{ secrets.GH_SECRETS }}
+          TH_JETON: ${{ secrets.TH_JETON }}
+          TH_USER_ID: ${{ secrets.TH_USER_ID }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_JETON: ${{ secrets.FB_PAGE_JETON }}
         run: python3 publier.py --tester
       - name: Renouveler le jeton (le lundi)
         if: github.event.schedule == '30 5 * * 1'
@@ -44,4 +52,6 @@ jobs:
           IG_JETON: ${{ secrets.IG_JETON }}
           NTFY_CANAL: ${{ secrets.NTFY_CANAL }}
           GH_SECRETS: ${{ secrets.GH_SECRETS }}
+          TH_JETON: ${{ secrets.TH_JETON }}
+          TH_USER_ID: ${{ secrets.TH_USER_ID }}
         run: python3 publier.py --renouveler
