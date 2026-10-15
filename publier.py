@@ -11,6 +11,11 @@ outils/pilote/depot/) : le modifier là-bas, pas ici.
 - Ensuite (reprises.py) : la même publication est reprise sur Threads et sur
   la page Facebook, si leurs secrets sont là. Un échec là n'affecte jamais
   Instagram : retenté au passage suivant, 3 essais.
+- Puis (reprises.py n'y touche pas) : la story Instagram « Nouvelle publication »
+  (image 1080 x 1920 déjà prête dans le dépôt, champ « story » du programme),
+  publiée par l'API officielle (media_type STORIES, sans autocollant). Même
+  garde-fous : jamais bloquant, 3 essais, pas de rattrapage ancien. Les chiffres
+  de la story sont relevés 2 h puis 20 h après (elle disparaît au bout de 24 h).
 - --renouveler (le lundi) : prolonge les jetons Instagram et Threads de 60
   jours et les remet dans les secrets du dépôt.
 
@@ -31,6 +36,8 @@ JETON = os.environ.get("IG_JETON", "").strip()
 USER = os.environ.get("IG_USER_ID", "").strip()
 RETARD_MAX = datetime.timedelta(hours=12)
 ESSAIS_MAX = 3
+STORY_FENETRE = datetime.timedelta(hours=6)  # pas de story de rattrapage plus tardive
+MESURES_STORY = ["reach", "views", "replies", "shares", "navigation", "follows", "profile_visits", "total_interactions"]
 
 
 def notifier(titre, message):
@@ -173,10 +180,94 @@ def passage():
                                "publiee_le": maintenant.isoformat(timespec="minutes"),
                                "media_id": media, "lien": lien,
                                "reprise": {"legende": p["legende"], "images": p.get("images"),
-                                           "video": p.get("video")}}, f)
+                                           "video": p.get("video"), "story": p.get("story")}}, f)
         enregistrer(f"Publié : {titre}")
         notifier("Publié sur Instagram", f"« {titre} » est en ligne. {lien}")
     rattraper()
+    stories()
+
+
+def publier_story(url):
+    """Story image : Instagram récupère le JPEG, le prépare, puis on publie."""
+    c = appel(USER + "/media", {"media_type": "STORIES", "image_url": url}, post=True)["id"]
+    attendre(c)
+    return appel(USER + "/media_publish", {"creation_id": c}, post=True)["id"]
+
+
+def mesures_story(ident):
+    """Chiffres d'une story ; si Meta en refuse une, les redemande une par une."""
+    def lire(rep):
+        out = {}
+        for x in rep.get("data", []):
+            v = x.get("total_value", {}).get("value") if "total_value" in x else (x.get("values") or [{}])[-1].get("value")
+            if isinstance(v, (int, float)):
+                out[x["name"]] = v
+        return out
+    try:
+        return lire(appel(ident + "/insights", {"metric": ",".join(MESURES_STORY)}))
+    except RuntimeError:
+        out = {}
+        for n in MESURES_STORY:
+            try:
+                out.update(lire(appel(ident + "/insights", {"metric": n})))
+            except RuntimeError:
+                pass
+        return out
+
+
+def faire_story(rec, maintenant):
+    """Publie la story d'une publication rangée dans publie/, ou relève ses chiffres. Renvoie True si rec a changé."""
+    url = (rec.get("reprise") or {}).get("story")
+    if not url or not rec.get("publiee_le"):
+        return False
+    titre = rec.get("titre", rec.get("nom", ""))
+    s = rec.get("story")
+    if s is None:
+        if maintenant - datetime.datetime.fromisoformat(rec["publiee_le"]) > STORY_FENETRE:
+            return False
+        try:
+            ident = publier_story(url)
+            rec["story"] = {"id": ident, "le": maintenant.isoformat(timespec="minutes")}
+            notifier("Story publiée", f"Story « {titre} » en ligne.")
+        except Exception as e:
+            rec["story_essais"] = rec.get("story_essais", 0) + 1
+            rec["story_erreur"] = str(e)[:300]
+            if rec["story_essais"] >= ESSAIS_MAX:
+                rec["story"] = {"abandon": str(e)[:300]}
+                notifier("Story non publiée", f"« {titre} » : {str(e)[:200]}")
+        return True
+    if not s.get("id") or not s.get("le"):
+        return False
+    heures = (maintenant - datetime.datetime.fromisoformat(s["le"])).total_seconds() / 3600
+    releves = s.setdefault("chiffres", {})
+    cle = "fin" if 20 <= heures < 23.7 else "mi" if 2 <= heures < 20 else None
+    if not cle or cle in releves:
+        return False
+    try:
+        chiffres = mesures_story(s["id"])
+    except Exception as e:
+        print("::warning::chiffres de story impossibles :", str(e)[:200])
+        return False
+    if not chiffres:
+        return False
+    releves[cle] = chiffres
+    return True
+
+
+def stories():
+    """Story de chaque publication des dernières heures + chiffres des stories en ligne (jamais bloquant)."""
+    maintenant = datetime.datetime.now(datetime.timezone.utc)
+    for f in sorted(glob.glob(os.path.join(ICI, "publie", "*.json"))):
+        try:
+            with open(f, encoding="utf-8") as fi:
+                rec = json.load(fi)
+            if not faire_story(rec, maintenant):
+                continue
+            with open(f, "w", encoding="utf-8") as fo:
+                json.dump(rec, fo, ensure_ascii=False, indent=1)
+            enregistrer(f"Story : {rec.get('titre', rec.get('nom', ''))}")
+        except Exception as e:
+            print("::warning::story impossible :", str(e)[:200])
 
 
 def rattraper():
