@@ -53,11 +53,25 @@ def debut(texte, n=60):
 
 # ---------- texte ----------
 
+def sans_retours_forces(t):
+    """Les légendes sont coupées en lignes courtes : on recolle les phrases, on garde listes et paragraphes."""
+    sortie = []
+    for ligne in t.splitlines():
+        nouvelle = (not ligne.strip() or not sortie or not sortie[-1].strip()
+                    or re.match(r"\s*([–\-•*]|\d+[.)]\s)", ligne)
+                    or re.search(r"[.!?:…»)\U0001F300-\U0001FAFF]$", sortie[-1].rstrip()))
+        if nouvelle:
+            sortie.append(ligne)
+        else:
+            sortie[-1] = sortie[-1].rstrip() + " " + ligne.strip()
+    return "\n".join(sortie)
+
+
 def texte_threads(legende):
     """Légende d'Instagram → 500 caractères au plus, sans mots-dièse, avec servart.fr en clair."""
     t = re.sub(r"(?<!\S)#\w+", "", legende)             # Threads n'aime que 1 sujet : on les retire
     t = "\n".join(re.sub(r"[ \t]+", " ", l).strip() for l in t.splitlines())
-    t = re.sub(r"\n{3,}", "\n\n", t).strip()
+    t = re.sub(r"\n{3,}", "\n\n", sans_retours_forces(t)).strip()
     if len(t) <= LIMITE_THREADS and LIEN in t:
         return t
     place = LIMITE_THREADS - len(LIEN) - 1
@@ -68,6 +82,8 @@ def texte_threads(legende):
             t = coupe[:fin + 1].strip()
         else:
             t = coupe[:coupe.rfind(" ")].rstrip(",;:") + "…"
+    if t[-1:] in ";:,":
+        t = t[:-1].rstrip() + "…"
     if LIEN not in t:
         t += "\n" + LIEN
     return t
