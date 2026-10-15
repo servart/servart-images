@@ -178,6 +178,14 @@ def facebook_publier(rep):
     return ident, lien
 
 
+def facebook_story(url):
+    """Story de la page Facebook (photo_stories) : la photo est envoyée non publiée, puis posée en story."""
+    page, jeton = secret("FB_PAGE_ID"), secret("FB_PAGE_JETON")
+    photo = appel(FACEBOOK, page + "/photos", jeton, {"url": url, "published": "false"}, post=True)["id"]
+    rep = appel(FACEBOOK, page + "/photo_stories", jeton, {"photo_id": photo}, post=True)
+    return str(rep.get("post_id") or photo)
+
+
 PUBLIER = {"threads": threads_publier, "facebook": facebook_publier}
 NOMS = {"threads": "Threads", "facebook": "Facebook"}
 

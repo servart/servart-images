@@ -14,7 +14,7 @@ outils/pilote/depot/) : le modifier là-bas, pas ici.
 - Puis (reprises.py n'y touche pas) : la story Instagram « Nouvelle publication »
   (image 1080 x 1920 déjà prête dans le dépôt, champ « story » du programme),
   publiée par l'API officielle (media_type STORIES, sans autocollant). Même
-  garde-fous : jamais bloquant, 3 essais, pas de rattrapage ancien. Les chiffres
+  garde-fous (et même story sur la page Facebook, photo_stories) : jamais bloquant, 3 essais, pas de rattrapage ancien. Les chiffres
   de la story sont relevés 2 h puis 20 h après (elle disparaît au bout de 24 h).
 - --renouveler (le lundi) : prolonge les jetons Instagram et Threads de 60
   jours et les remet dans les secrets du dépôt.
@@ -254,6 +254,26 @@ def faire_story(rec, maintenant):
     return True
 
 
+def faire_story_facebook(rec, maintenant):
+    """Même story sur la page Facebook (jamais bloquant, 3 essais, pas de rattrapage ancien). True si rec a changé."""
+    url = (rec.get("reprise") or {}).get("story")
+    if (not url or not rec.get("publiee_le") or rec.get("fb_story") is not None or not reprises
+            or "facebook" not in reprises.actifs()):
+        return False
+    if maintenant - datetime.datetime.fromisoformat(rec["publiee_le"]) > STORY_FENETRE:
+        return False
+    titre = rec.get("titre", rec.get("nom", ""))
+    try:
+        rec["fb_story"] = {"id": reprises.facebook_story(url), "le": maintenant.isoformat(timespec="minutes")}
+    except Exception as e:
+        rec["fb_story_essais"] = rec.get("fb_story_essais", 0) + 1
+        rec["fb_story_erreur"] = str(e)[:300]
+        if rec["fb_story_essais"] >= ESSAIS_MAX:
+            rec["fb_story"] = {"abandon": str(e)[:300]}
+            notifier("Story Facebook non publiée", f"« {titre} » : {str(e)[:200]}")
+    return True
+
+
 def stories():
     """Story de chaque publication des dernières heures + chiffres des stories en ligne (jamais bloquant)."""
     maintenant = datetime.datetime.now(datetime.timezone.utc)
@@ -261,7 +281,9 @@ def stories():
         try:
             with open(f, encoding="utf-8") as fi:
                 rec = json.load(fi)
-            if not faire_story(rec, maintenant):
+            change = faire_story(rec, maintenant)
+            change = faire_story_facebook(rec, maintenant) or change
+            if not change:
                 continue
             with open(f, "w", encoding="utf-8") as fo:
                 json.dump(rec, fo, ensure_ascii=False, indent=1)
