@@ -20,5 +20,7 @@
   "Deux sculptures en terre d'un couple en tenue de plage, sac et raquette à leurs pieds, « J'attends la vague » de Barbotine Ciselet.",
   "Texte : qui est Barbotine Ciselet, sculptrice céramiste à Toulouse, et où voir son travail.",
   "Message de Servart : « Ton travail mérite sa propre page »."
- ]
+ ],
+ "essais": 1,
+ "erreur": "{\"error\":{\"message\":\"Application request limit reached\",\"type\":\"OAuthException\",\"is_transient\":false,\"code\":4,\"error_subcode\":2207051,\"error_user_title\":\"action is blocked\",\"error_user_msg\":\"We restrict certain activity to protect our community. Tell us if you think we made a mistake.\",\"fbtrace_id\":\"AoqdR4epA2I_iVP44KqiiK0\"}}"
 }
