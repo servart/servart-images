@@ -17,7 +17,7 @@
   "le": "2026-10-27T18:41+00:00"
  },
  "reprise_essais": {
-  "facebook": 1
+  "facebook": 2
  },
  "reprise_erreurs": {
   "facebook": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
