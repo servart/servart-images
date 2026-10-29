@@ -20,5 +20,16 @@
   ],
   "video": null,
   "story": "https://raw.githubusercontent.com/servart/servart-images/main/2026-S44-a-voir-ce-week-end/story.jpg"
+ },
+ "threads": {
+  "id": "18228955747327566",
+  "lien": "https://www.threads.com/@servart.fr/post/DfF71Ixj_6D",
+  "le": "2026-10-29T21:06+00:00"
+ },
+ "reprise_essais": {
+  "facebook": 1
+ },
+ "reprise_erreurs": {
+  "facebook": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
  }
 }
