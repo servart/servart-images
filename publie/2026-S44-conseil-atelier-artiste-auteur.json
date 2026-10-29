@@ -29,5 +29,11 @@
  },
  "reprise_erreurs": {
   "facebook": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
- }
+ },
+ "story": {
+  "id": "17997955860013326",
+  "le": "2026-10-29T02:52+00:00"
+ },
+ "fb_story_essais": 1,
+ "fb_story_erreur": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
 }
