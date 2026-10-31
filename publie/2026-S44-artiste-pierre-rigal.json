@@ -32,8 +32,20 @@
  },
  "story": {
   "id": "17992985963862634",
-  "le": "2026-10-31T18:31+00:00"
+  "le": "2026-10-31T18:31+00:00",
+  "chiffres": {
+   "mi": {
+    "reach": 0,
+    "views": 3,
+    "replies": 0,
+    "shares": 0,
+    "navigation": 0,
+    "follows": 0,
+    "profile_visits": 0,
+    "total_interactions": 0
+   }
+  }
  },
- "fb_story_essais": 1,
+ "fb_story_essais": 2,
  "fb_story_erreur": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
 }
