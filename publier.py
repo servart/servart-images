@@ -119,7 +119,8 @@ def deja_publie(p):
 def publier(p):
     if p.get("video"):  # Reel : Instagram récupère la vidéo, la prépare (jusqu'à 10 min), puis on publie
         c = appel(USER + "/media", {"media_type": "REELS", "video_url": p["video"], "caption": p["legende"],
-                                    "share_to_feed": "true", "thumb_offset": str(p.get("couverture_ms", 0))},
+                                    "share_to_feed": "true", "thumb_offset": str(p.get("couverture_ms", 0)),
+                                    **({"cover_url": p["couverture"]} if p.get("couverture") else {})},  # image de couverture à part
                   post=True)["id"]
         attendre(c, 120)
         media = appel(USER + "/media_publish", {"creation_id": c}, post=True)["id"]
