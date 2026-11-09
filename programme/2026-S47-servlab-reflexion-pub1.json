@@ -1,0 +1,27 @@
+{
+ "nom": "2026-S47-servlab-reflexion-pub1",
+ "titre": "Coulisses du ServLab · 2 : les choix derrière la pub",
+ "publier_le": "2026-11-18T12:30+01:00",
+ "legende": "Réaliser une pub en animation 3D, c'est surtout une suite de choix. Voici les nôtres pour\nla première pub du ServLab.\nOn est partis d'une galère que tout photographe connaît : le client qui voulait « juste\nquelques photos ». Pour le ton, une scène volée entre collègues plutôt qu'une pub qui\ncrie. Pour les personnages, une règle : chacun est fait de la matière de son art.\nPour le cadre, on resserre franchement quand un plan manque de force : 40, puis 70, puis\n92 mm au plan 2.\nEt toi, quel choix tu as refait trois fois avant de le garder ? 🎬\n\n#ArtistesLibres #Blender #Animation3D #StopMotion",
+ "images": [
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/01.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/02.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/03.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/04.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/05.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/06.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/07.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/08.jpg"
+ ],
+ "textes_alternatifs": [
+  "Rendu Blender de Mina, personnage en grès, qui montre le téléphone de Malik,",
+  "Gros plan du visage de Malik, personnage 3D en carton coiffé d'un objectif.",
+  "Mina, une théière à la main, et Malik assis sur un tabouret dans le studio photo.",
+  "Trois personnages 3D de face : Malik en carton, Mina en grès émaillé, Joseph en bois",
+  "Joseph, peintre en bois, traverse le hangar en briques avec son pinceau.",
+  "Gros plan d'une main 3D aux doigts pliés qui tient un téléphone en bois.",
+  "Plan serré horizontal de Mina et Malik, cadré à la focale 92 mm.",
+  "Plan large du studio photo du ServLab : Mina et Malik, sous le titre « Ton art, tes règles »."
+ ],
+ "story": "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-reflexion-pub1/story.jpg"
+}

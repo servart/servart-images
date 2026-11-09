@@ -1,0 +1,31 @@
+{
+ "nom": "2026-S47-servlab-coulisses-pub1",
+ "titre": "Coulisses du ServLab : une pub en 3D, étape par étape",
+ "publier_le": "2026-11-16T18:00+01:00",
+ "legende": "Animation 3D dans Blender : voici comment on a préparé la première pub du ServLab, du plan\nau sol jusqu'au cadrage.\nAvant la moindre texture, on a tout posé à plat puis en blocs gris : un plan du lieu à\nl'échelle, des boîtes à la place des meubles, des mannequins pour caler nos 9 plans. La\nlumière, les objets et les poses sont venus ensuite, une fois l'espace en place.\nDeux choses qu'on referait sans hésiter : regarder chaque personnage de face, de profil et\nde dos avant de poser son squelette, et rendre chaque plan deux fois dans Blender, en\n9:16 et en 16:9, plutôt que recadrer au montage.\nTu animes en 3D ? Dis-nous en commentaire par quelle étape tu commences 🎬\n\n#ArtistesLibres #Blender #Animation3D #StopMotion",
+ "images": [
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/01.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/02.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/03.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/04.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/05.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/06.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/07.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/08.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/09.jpg",
+  "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/10.jpg"
+ ],
+ "textes_alternatifs": [
+  "Rendu Blender en gros plan de deux personnages façon pâte à modeler, une femme et un",
+  "Plan au sol du ServLab vu du dessus : ateliers de photo-vidéo, musique, peinture,",
+  "Décor 3D en blocs gris dans Blender : murs, meubles et personnages en formes simples.",
+  "Storyboard de 9 plans rendus dans Blender avec des mannequins gris.",
+  "Même décor 3D avant et après le réglage de la lumière : lumière plate, puis lampes",
+  "Décor 3D habillé du ServLab : instruments, tour de potier, tissus et grande table",
+  "Personnage 3D vu de face, de profil, de dos et de l'autre profil, pour vérifier le",
+  "Gros plan d'une main 3D aux doigts pliés qui tient un téléphone en bois.",
+  "Le même plan cadré en vertical 9:16 et en horizontal 16:9 dans Blender.",
+  "Deux personnages 3D dans le studio photo, sous le titre « Ton art, tes règles »."
+ ],
+ "story": "https://raw.githubusercontent.com/servart/servart-images/main/2026-S47-servlab-coulisses-pub1/story.jpg"
+}
