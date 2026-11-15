@@ -10,5 +10,16 @@
   "images": null,
   "video": "https://raw.githubusercontent.com/servart/servart-images/main/2026-S46-servlab-pub1-juste-quelques-photos/reel.mp4",
   "story": "https://raw.githubusercontent.com/servart/servart-images/main/2026-S46-servlab-pub1-juste-quelques-photos/story.jpg"
+ },
+ "threads": {
+  "id": "18134964988690616",
+  "lien": "https://www.threads.com/@servart.fr/post/Dfxlq9HB3fM",
+  "le": "2026-11-15T19:59+00:00"
+ },
+ "reprise_essais": {
+  "facebook": 1
+ },
+ "reprise_erreurs": {
+  "facebook": "{\"error\":{\"message\":\"Any of the pages_read_engagement, pages_manage_metadata,\\n        pages_read_user_content, pages_manage_ads, pages_show_list or\\n        pages_messaging permission(s) must be granted before impersonating a\\n        user's page.\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A"
  }
 }
