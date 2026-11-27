@@ -31,7 +31,19 @@
  },
  "story": {
   "id": "18140308150728005",
-  "le": "2026-11-27T00:01+00:00"
+  "le": "2026-11-27T00:01+00:00",
+  "chiffres": {
+   "mi": {
+    "reach": 0,
+    "views": 0,
+    "replies": 0,
+    "shares": 0,
+    "navigation": 0,
+    "follows": 0,
+    "profile_visits": 0,
+    "total_interactions": 0
+   }
+  }
  },
  "fb_story": {
   "id": "1562566292299260",
